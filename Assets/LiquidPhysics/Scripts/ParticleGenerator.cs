@@ -11,28 +11,57 @@ using System.Collections;
 /// Contact: q_layer@hotmail.com
 /// </summary>
 
-public class ParticleGenerator : MonoBehaviour {
-  public  int particlesSpawned = 0;
-	float SPAWN_INTERVAL=0.025f; // How much time until the next particle spawns
-	float lastSpawnTime=float.MinValue; //The last spawn time
-	public int PARTICLE_LIFETIME=3; //How much time will each particle live
-	public Vector3 particleForce; //Is there a initial force particles should have?
-	public DynamicParticle.STATES particlesState=DynamicParticle.STATES.WATER; // The state of the particles spawned
-	public Transform particlesParent; // Where will the spawned particles will be parented (To avoid covering the whole inspector with them)
+public class ParticleGenerator : MonoBehaviour
+{
+    public int particlesSpawned = 0;
+    float SPAWN_INTERVAL = 0.025f; // How much time until the next particle spawns
+    float lastSpawnTime = float.MinValue; //The last spawn time
+    public int PARTICLE_LIFETIME = 3; //How much time will each particle live
+    public Vector3 particleForce; //Is there a initial force particles should have?
+    public DynamicParticle.STATES particlesState = DynamicParticle.STATES.WATER; // The state of the particles spawned
+    public Transform particlesParent; // Where will the spawned particles will be parented (To avoid covering the whole inspector with them)
 
-	void Start() { 	}
+    [SerializeField] private GameObject pouringObject;
 
-	void Update() {	
-		if( lastSpawnTime+SPAWN_INTERVAL<Time.time && particlesSpawned < 100){ // Is it time already for spawning a new particle?
-			GameObject newLiquidParticle=(GameObject)Instantiate(Resources.Load("LiquidPhysics/DynamicParticle")); //Spawn a particle
+    void Start() { }
+
+    void Update()
+    {
+        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 100)
+        { // Is it time already for spawning a new particle?
+            GameObject newLiquidParticle = (GameObject)Instantiate(Resources.Load("LiquidPhysics/DynamicParticle")); //Spawn a particle
             particlesSpawned += 1;
-			newLiquidParticle.GetComponent<Rigidbody2D>().AddForce( particleForce); //Add our custom force
-			DynamicParticle particleScript=newLiquidParticle.GetComponent<DynamicParticle>(); // Get the particle script
-			particleScript.SetLifeTime(PARTICLE_LIFETIME); //Set each particle lifetime
-			particleScript.SetState(particlesState); //Set the particle State
-			newLiquidParticle.transform.position=transform.position;// Relocate to the spawner position
-			newLiquidParticle.transform.parent=particlesParent;// Add the particle to the parent container			
-			lastSpawnTime=Time.time; // Register the last spawnTime			
-		}		
-	}
+            newLiquidParticle.GetComponent<Rigidbody2D>().AddForce(particleForce); //Add our custom force
+            DynamicParticle particleScript = newLiquidParticle.GetComponent<DynamicParticle>(); // Get the particle script
+            particleScript.SetLifeTime(PARTICLE_LIFETIME); //Set each particle lifetime
+            particleScript.SetState(particlesState); //Set the particle State
+            newLiquidParticle.transform.position = transform.position;// Relocate to the spawner position
+            newLiquidParticle.transform.parent = particlesParent;// Add the particle to the parent container			
+            lastSpawnTime = Time.time; // Register the last spawnTime			
+        }
+    }
+
+    void checkRotationOfPouringApparatus()
+    {
+        if(pouringObject.transform.rotation.eulerAngles.z > 100)
+        {
+            spawnParticles();
+        }
+    }
+
+    void spawnParticles()
+    {
+        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 100)// && isPouring = true)
+        { // Is it time already for spawning a new particle?
+            GameObject newLiquidParticle = (GameObject)Instantiate(Resources.Load("LiquidPhysics/DynamicParticle")); //Spawn a particle
+            particlesSpawned += 1; //* rotationModifier ;
+            newLiquidParticle.GetComponent<Rigidbody2D>().AddForce(particleForce); //Add our custom force
+            DynamicParticle particleScript = newLiquidParticle.GetComponent<DynamicParticle>(); // Get the particle script
+            particleScript.SetLifeTime(PARTICLE_LIFETIME); //Set each particle lifetime
+            particleScript.SetState(particlesState); //Set the particle State
+            newLiquidParticle.transform.position = transform.position;// Relocate to the spawner position
+            newLiquidParticle.transform.parent = particlesParent;// Add the particle to the parent container			
+            lastSpawnTime = Time.time; // Register the last spawnTime			
+        }
+    }
 }
