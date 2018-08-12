@@ -69,6 +69,9 @@ public class DynamicParticle : MonoBehaviour
                 {
                     ScaleDown();
                     scoreTaker.gotOut += 1;
+                    ParticleGenerator.particlesSpawned -= 1;
+                    scoreTaker.gotOut += 1;
+                    scoreTaker.totalScore -= 100;
                 }
                 break;
             case STATES.LAVA:

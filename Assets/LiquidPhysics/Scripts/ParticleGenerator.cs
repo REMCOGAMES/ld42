@@ -13,7 +13,7 @@ using System.Collections;
 
 public class ParticleGenerator : MonoBehaviour
 {
-    public int particlesSpawned = 0;
+    static public int particlesSpawned = 0;
     float SPAWN_INTERVAL = 0.025f; // How much time until the next particle spawns
     float lastSpawnTime = float.MinValue; //The last spawn time
     public int PARTICLE_LIFETIME = 3; //How much time will each particle live
@@ -22,47 +22,52 @@ public class ParticleGenerator : MonoBehaviour
     public Transform particlesParent; // Where will the spawned particles will be parented (To avoid covering the whole inspector with them)
     [SerializeField] private GameObject spawner;
     [SerializeField] private GameObject pouringObject;
+    Vector3 objectEulers;
 
     void Start() { }
 
     void Update()
     {
-        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 100)
-        { // Is it time already for spawning a new particle?
-            GameObject newLiquidParticle = (GameObject)Instantiate(Resources.Load("LiquidPhysics/DynamicParticle")); //Spawn a particle
-            particlesSpawned += 1;
-            newLiquidParticle.GetComponent<Rigidbody2D>().AddForce(particleForce); //Add our custom force
-            DynamicParticle particleScript = newLiquidParticle.GetComponent<DynamicParticle>(); // Get the particle script
-            particleScript.SetLifeTime(PARTICLE_LIFETIME); //Set each particle lifetime
-            particleScript.SetState(particlesState); //Set the particle State
-            newLiquidParticle.transform.position = spawner.transform.position;// Relocate to the spawner position
-            newLiquidParticle.transform.parent = particlesParent;// Add the particle to the parent container			
-            lastSpawnTime = Time.time; // Register the last spawnTime			
-        }
+        checkRotationOfPouringApparatus();
+        //  if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 100)
+        //  { // Is it time already for spawning a new particle?
+        //      GameObject newLiquidParticle = (GameObject)Instantiate(Resources.Load("LiquidPhysics/DynamicParticle")); //Spawn a particle
+        //      particlesSpawned += 1;
+        //      newLiquidParticle.GetComponent<Rigidbody2D>().AddForce(particleForce); //Add our custom force
+        //      DynamicParticle particleScript = newLiquidParticle.GetComponent<DynamicParticle>(); // Get the particle script
+        //      particleScript.SetLifeTime(PARTICLE_LIFETIME); //Set each particle lifetime
+        //      particleScript.SetState(particlesState); //Set the particle State
+        //      newLiquidParticle.transform.position = spawner.transform.position;// Relocate to the spawner position
+        //      newLiquidParticle.transform.parent = particlesParent;// Add the particle to the parent container			
+        //      lastSpawnTime = Time.time; // Register the last spawnTime			
+        //  }
     }
 
     void checkRotationOfPouringApparatus()
     {
-        Vector3 objectEulers = pouringObject.transform.rotation.eulerAngles;
+        objectEulers = pouringObject.transform.rotation.eulerAngles;
         int rotationModifier = 1;
         int baseNumberToSpawn = 1;
-        if (objectEulers.z > 75 && objectEulers.z < 100)
+        if (objectEulers.z > 30 && objectEulers.z < 60)
         {
             rotationModifier = 1;
             baseNumberToSpawn = 1;
+            particleForce.x = -35.0f;
             spawnParticles(rotationModifier, baseNumberToSpawn);
         }
-        else if (objectEulers.z >= 100 && objectEulers.z < 125)
+        else if (objectEulers.z >= 60 && objectEulers.z < 90)
         {
             rotationModifier = 2;
             baseNumberToSpawn = 2;
+            particleForce.x = -50.0f;
 
             spawnParticles(rotationModifier, baseNumberToSpawn);
         }
-        else if (objectEulers.z >= 125 && objectEulers.z < 150)
+        else if (objectEulers.z >= 90)
         {
             rotationModifier = 3;
             baseNumberToSpawn = 3;
+            particleForce.x = -75.0f;
 
             spawnParticles(rotationModifier, baseNumberToSpawn);
         }
@@ -72,15 +77,15 @@ public class ParticleGenerator : MonoBehaviour
     void spawnParticles(int rotationModifier, int baseNumberToSpawn)
     {
         //COME BACK HERE 
-        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 100 && pouringManager.isPouring == true )//&& gameObject.transform.rotation.eulerAngles.z > somePredefinedSize)
+        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 250 && pouringManager.isPouring == true)//&& gameObject.transform.rotation.eulerAngles.z > somePredefinedSize)
         { // Is it time already for spawning a new particle?
             GameObject newLiquidParticle = (GameObject)Instantiate(Resources.Load("LiquidPhysics/DynamicParticle")); //Spawn a particle
-            particlesSpawned += baseNumberToSpawn * rotationModifier ;
+            particlesSpawned += 1;
             newLiquidParticle.GetComponent<Rigidbody2D>().AddForce(particleForce); //Add our custom force
             DynamicParticle particleScript = newLiquidParticle.GetComponent<DynamicParticle>(); // Get the particle script
             particleScript.SetLifeTime(PARTICLE_LIFETIME); //Set each particle lifetime
             particleScript.SetState(particlesState); //Set the particle State
-            newLiquidParticle.transform.position = transform.position;// Relocate to the spawner position
+            newLiquidParticle.transform.position = spawner.transform.position;// Relocate to the spawner position
             newLiquidParticle.transform.parent = particlesParent;// Add the particle to the parent container			
             lastSpawnTime = Time.time; // Register the last spawnTime			
         }

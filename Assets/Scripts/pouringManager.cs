@@ -12,8 +12,7 @@ public class pouringManager : MonoBehaviour
     Vector3 worldPos;
     Quaternion pourRotation;
     Vector3 pourPosition;
-
-    // Use this for initialization
+    
     void Start()
     {
         pourRotation = this.gameObject.transform.rotation;
@@ -63,6 +62,7 @@ public class pouringManager : MonoBehaviour
     private void OnMouseDown()
     {
         isPouring = true;
+        totalPours += 1;
 
 
     }
@@ -71,7 +71,6 @@ public class pouringManager : MonoBehaviour
     {
         gameObject.transform.rotation = pourRotation;
         gameObject.transform.position = pourPosition;
-        totalPours += 1;
         isPouring = false;
 
     }
