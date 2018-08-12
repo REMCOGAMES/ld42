@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class pouringManager : MonoBehaviour {
+public class pouringManager : MonoBehaviour
+{
 
     static public bool isPouring = false;
     static public int totalPours = 0;
@@ -10,9 +11,11 @@ public class pouringManager : MonoBehaviour {
     Camera mainCam;
     Vector3 worldPos;
     Quaternion pourRotation;
-    
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start()
+    {
+        pourRotation = this.gameObject.transform.rotation;
         pouringJoint = GetComponent<TargetJoint2D>();
         mainCam = Camera.main;
     }
@@ -43,6 +46,15 @@ public class pouringManager : MonoBehaviour {
             Debug.Log(worldPos);
             Debug.Log(pouringJoint.target);
         }
+
+        if (gameObject.transform.rotation.eulerAngles.z > 90)
+            transform.rotation.eulerAngles.Set(0, 0, 90);
+
+        //if total pours is greater than a set number we want to make it non-interactable
+        if (totalPours > 4)
+        {
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
     }
 
 
@@ -55,6 +67,9 @@ public class pouringManager : MonoBehaviour {
 
     private void OnMouseUp()
     {
+        gameObject.transform.rotation = pourRotation;
+        totalPours += 1;
         isPouring = false;
+
     }
 }
