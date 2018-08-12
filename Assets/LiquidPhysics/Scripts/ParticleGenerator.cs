@@ -43,18 +43,39 @@ public class ParticleGenerator : MonoBehaviour
 
     void checkRotationOfPouringApparatus()
     {
-        if(pouringObject.transform.rotation.eulerAngles.z > 100)
+        Vector3 objectEulers = pouringObject.transform.rotation.eulerAngles;
+        int rotationModifier = 1;
+        int baseNumberToSpawn = 1;
+        if (objectEulers.z > 0 && objectEulers.z < 30)
         {
-            spawnParticles();
+            rotationModifier = 1;
+            baseNumberToSpawn = 1;
+            spawnParticles(rotationModifier, baseNumberToSpawn);
         }
+        else if (objectEulers.z >= 30 && objectEulers.z < 60)
+        {
+            rotationModifier = 2;
+            baseNumberToSpawn = 2;
+
+            spawnParticles(rotationModifier, baseNumberToSpawn);
+        }
+        else if (objectEulers.z >= 60 && objectEulers.z < 91)
+        {
+            rotationModifier = 3;
+            baseNumberToSpawn = 3;
+
+            spawnParticles(rotationModifier, baseNumberToSpawn);
+        }
+
     }
 
-    void spawnParticles()
+    void spawnParticles(int rotationModifier, int baseNumberToSpawn)
     {
-        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 100)// && isPouring = true)
+        //COME BACK HERE 
+        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 100 && pouringManager.isPouring == true )//&& gameObject.transform.rotation.eulerAngles.z > somePredefinedSize)
         { // Is it time already for spawning a new particle?
             GameObject newLiquidParticle = (GameObject)Instantiate(Resources.Load("LiquidPhysics/DynamicParticle")); //Spawn a particle
-            particlesSpawned += 1; //* rotationModifier ;
+            particlesSpawned += baseNumberToSpawn * rotationModifier ;
             newLiquidParticle.GetComponent<Rigidbody2D>().AddForce(particleForce); //Add our custom force
             DynamicParticle particleScript = newLiquidParticle.GetComponent<DynamicParticle>(); // Get the particle script
             particleScript.SetLifeTime(PARTICLE_LIFETIME); //Set each particle lifetime

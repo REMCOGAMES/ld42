@@ -7,20 +7,28 @@ public class scoreTaker : MonoBehaviour
 
     BoxCollider2D scoreCollider;
     int totalScore = 0;
-    int totalPours = 0;
-    int gotOut = 0;
+     int totalPours = 0;
+   static public int gotOut = 0;
     // Use this for initialization
     void Start()
     {
-
+        totalPours = pouringManager.totalPours;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if(totalPours > 3)
-        //lose
+        if (totalPours > 3)
+        {
+            //lock the object
+            // make one last check
+            //unless its filled lose
+        }
 
+        if (gotOut > 5)
+        {
+            //lose
+        }
 
     }
 
@@ -35,12 +43,13 @@ public class scoreTaker : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        gotOut += 1;
+        //if we want just one getting out
+        //as soon as it gets in here just lose
+        
         //if too many get out then lose
-        //        if(gotOut > 5)
-
-        //if gets in here lose        
+       
         totalScore -= 20 / totalPours;
+        Debug.Log(gotOut);
     }
 
 

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class pouringManager : MonoBehaviour {
 
-    public bool isPouring = false;
-    static int totalPours = 0;
+    static public bool isPouring = false;
+    static public int totalPours = 0;
     TargetJoint2D pouringJoint;
     Camera mainCam;
     Vector3 worldPos;
+    Quaternion pourRotation;
+    
 	// Use this for initialization
 	void Start () {
         pouringJoint = GetComponent<TargetJoint2D>();

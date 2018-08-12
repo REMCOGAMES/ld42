@@ -58,7 +58,10 @@ public class DynamicParticle : MonoBehaviour {
 			case STATES.WATER: //Water and lava got the same behaviour
 				MovementAnimation();
                 if(this.gameObject.transform.position.y < 0)
+                {
                 ScaleDown();
+                    scoreTaker.gotOut += 1;
+                }
 			break;
 			case STATES.LAVA:
 				MovementAnimation();
