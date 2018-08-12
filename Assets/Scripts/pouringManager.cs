@@ -47,14 +47,14 @@ public class pouringManager : MonoBehaviour
             Debug.Log(pouringJoint.target);
         }
 
-        if (gameObject.transform.rotation.eulerAngles.z > 90)
-            transform.rotation.eulerAngles.Set(0, 0, 90);
+       // if (gameObject.transform.rotation.eulerAngles.z > 90)
+         //   transform.rotation.eulerAngles.Set(0, 0, 90);
 
         //if total pours is greater than a set number we want to make it non-interactable
-        if (totalPours > 4)
-        {
-            GetComponent<BoxCollider2D>().enabled = false;
-        }
+      //  if (totalPours > 4)
+      //  {
+      //      GetComponent<BoxCollider2D>().enabled = false;
+      //  }
     }
 
 

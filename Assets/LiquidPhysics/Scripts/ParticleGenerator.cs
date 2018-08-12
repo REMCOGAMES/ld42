@@ -20,7 +20,7 @@ public class ParticleGenerator : MonoBehaviour
     public Vector3 particleForce; //Is there a initial force particles should have?
     public DynamicParticle.STATES particlesState = DynamicParticle.STATES.WATER; // The state of the particles spawned
     public Transform particlesParent; // Where will the spawned particles will be parented (To avoid covering the whole inspector with them)
-
+    [SerializeField] private GameObject spawner;
     [SerializeField] private GameObject pouringObject;
 
     void Start() { }
@@ -35,7 +35,7 @@ public class ParticleGenerator : MonoBehaviour
             DynamicParticle particleScript = newLiquidParticle.GetComponent<DynamicParticle>(); // Get the particle script
             particleScript.SetLifeTime(PARTICLE_LIFETIME); //Set each particle lifetime
             particleScript.SetState(particlesState); //Set the particle State
-            newLiquidParticle.transform.position = transform.position;// Relocate to the spawner position
+            newLiquidParticle.transform.position = spawner.transform.position;// Relocate to the spawner position
             newLiquidParticle.transform.parent = particlesParent;// Add the particle to the parent container			
             lastSpawnTime = Time.time; // Register the last spawnTime			
         }
