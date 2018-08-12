@@ -46,20 +46,20 @@ public class ParticleGenerator : MonoBehaviour
         Vector3 objectEulers = pouringObject.transform.rotation.eulerAngles;
         int rotationModifier = 1;
         int baseNumberToSpawn = 1;
-        if (objectEulers.z > 0 && objectEulers.z < 30)
+        if (objectEulers.z > 75 && objectEulers.z < 100)
         {
             rotationModifier = 1;
             baseNumberToSpawn = 1;
             spawnParticles(rotationModifier, baseNumberToSpawn);
         }
-        else if (objectEulers.z >= 30 && objectEulers.z < 60)
+        else if (objectEulers.z >= 100 && objectEulers.z < 125)
         {
             rotationModifier = 2;
             baseNumberToSpawn = 2;
 
             spawnParticles(rotationModifier, baseNumberToSpawn);
         }
-        else if (objectEulers.z >= 60 && objectEulers.z < 91)
+        else if (objectEulers.z >= 125 && objectEulers.z < 150)
         {
             rotationModifier = 3;
             baseNumberToSpawn = 3;

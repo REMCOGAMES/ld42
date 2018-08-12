@@ -22,7 +22,7 @@ public class iceCubeSpawner : MonoBehaviour
     {
         cubesSpawned += 1;
         iceCube = Instantiate(iceCubePrefab, gameObject.transform);
-        float randNum = Random.Range(0.4f, 1.0f);
+        float randNum = Random.Range(0.4f, 0.9f);
         iceCube.transform.localScale = new Vector2(randNum, randNum);
 
     }

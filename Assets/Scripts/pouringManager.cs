@@ -11,11 +11,13 @@ public class pouringManager : MonoBehaviour
     Camera mainCam;
     Vector3 worldPos;
     Quaternion pourRotation;
+    Vector3 pourPosition;
 
     // Use this for initialization
     void Start()
     {
         pourRotation = this.gameObject.transform.rotation;
+        pourPosition = this.gameObject.transform.position;
         pouringJoint = GetComponent<TargetJoint2D>();
         mainCam = Camera.main;
     }
@@ -68,6 +70,7 @@ public class pouringManager : MonoBehaviour
     private void OnMouseUp()
     {
         gameObject.transform.rotation = pourRotation;
+        gameObject.transform.position = pourPosition;
         totalPours += 1;
         isPouring = false;
 
