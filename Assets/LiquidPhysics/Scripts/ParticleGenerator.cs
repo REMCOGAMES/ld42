@@ -26,7 +26,10 @@ public class ParticleGenerator : MonoBehaviour
     AudioSource pitcherAudio;
 
 
-    void Start() { }
+    void Start() {
+        pitcherAudio = GetComponent<AudioSource>();
+        particlesSpawned = 0; 
+    }
 
     void Update()
     {
@@ -52,6 +55,7 @@ public class ParticleGenerator : MonoBehaviour
         int baseNumberToSpawn = 1;
         if (objectEulers.z > 30 && objectEulers.z < 60)
         {
+            if(pitcherAudio.isPlaying == false)
             pitcherAudio.Play();
             rotationModifier = 1;
             baseNumberToSpawn = 1;
@@ -60,7 +64,8 @@ public class ParticleGenerator : MonoBehaviour
         }
         else if (objectEulers.z >= 60 && objectEulers.z < 90)
         {
-            pitcherAudio.Play();
+            if (pitcherAudio.isPlaying == false)
+                pitcherAudio.Play();
             rotationModifier = 2;
             baseNumberToSpawn = 2;
             particleForce.x = -50.0f;
@@ -68,7 +73,8 @@ public class ParticleGenerator : MonoBehaviour
         }
         else if (objectEulers.z >= 90)
         {
-            pitcherAudio.Play();
+            if (pitcherAudio.isPlaying == false)
+                pitcherAudio.Play();
             rotationModifier = 3;
             baseNumberToSpawn = 3;
             particleForce.x = -75.0f;

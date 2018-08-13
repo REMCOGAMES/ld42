@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class winCheck : MonoBehaviour
 {
-    
+
     [SerializeField] private GameObject winPanel;
     [SerializeField] private Text winText;
     [SerializeField] private Text lossText;
@@ -23,7 +23,8 @@ public class winCheck : MonoBehaviour
 
     IEnumerator waitForSound()
     {
-        winAudio.Play();
+        if (winAudio.isPlaying == false)
+            winAudio.Play();
         yield return new WaitForSeconds(winAudio.clip.length);
         Destroy(gameObject);
 
@@ -42,7 +43,7 @@ public class winCheck : MonoBehaviour
             StartCoroutine(waitForSound());
 
         }
-        else if(pouringManager.totalPours >= 5 && waterIsFilled == false)
+        else if (pouringManager.totalPours >= 5 && waterIsFilled == false)
         {
             Debug.Log("Game has been lost");
             lossPanel.SetActive(true);
@@ -65,18 +66,24 @@ public class winCheck : MonoBehaviour
     //Will not work if the player releases the pitcher too early, bug I can't fix right now
     private void OnTriggerStay2D(Collider2D collision)
     {
-        GetComponent<LineRenderer>().startColor = new Color(0.0f, 1.0f, 0.0f);
-        GetComponent<LineRenderer>().endColor = new Color(0.0f, 1.0f, 0.0f);
+        StartCoroutine(wait());
         if (pouringManager.isPouring == false && collision.GetComponent<Collider2D>().tag == "DynamicParticle")
-            StartCoroutine(wait());
+        {
+
+            GetComponent<LineRenderer>().startColor = new Color(0.0f, 1.0f, 0.0f);
+            GetComponent<LineRenderer>().endColor = new Color(0.0f, 1.0f, 0.0f);
+
+        }
     }
-     
+
 
     IEnumerator wait()
     {
         yield return new WaitForSeconds(3.0f);
-        waterIsFilled = true;
+       
         Debug.Log("Game should be won");
+        waterIsFilled = true;
+
     }
 
 }

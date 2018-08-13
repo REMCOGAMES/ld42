@@ -67,7 +67,8 @@ public class DynamicParticle : MonoBehaviour
                 MovementAnimation();
                 if (this.gameObject.transform.position.y < -5)
                 {
-                    Camera.main.GetComponent<AudioSource>().Play();
+                    if (Camera.main.GetComponent<AudioSource>().isPlaying == false)
+                        Camera.main.GetComponent<AudioSource>().Play();
                     ScaleDown();
                     ParticleGenerator.particlesSpawned -= 1;
                     scoreTaker.totalScore -= 100;
