@@ -23,6 +23,8 @@ public class ParticleGenerator : MonoBehaviour
     [SerializeField] private GameObject spawner;
     [SerializeField] private GameObject pouringObject;
     Vector3 objectEulers;
+    AudioSource pitcherAudio;
+
 
     void Start() { }
 
@@ -50,6 +52,7 @@ public class ParticleGenerator : MonoBehaviour
         int baseNumberToSpawn = 1;
         if (objectEulers.z > 30 && objectEulers.z < 60)
         {
+            pitcherAudio.Play();
             rotationModifier = 1;
             baseNumberToSpawn = 1;
             particleForce.x = -35.0f;
@@ -57,14 +60,15 @@ public class ParticleGenerator : MonoBehaviour
         }
         else if (objectEulers.z >= 60 && objectEulers.z < 90)
         {
+            pitcherAudio.Play();
             rotationModifier = 2;
             baseNumberToSpawn = 2;
             particleForce.x = -50.0f;
-
             spawnParticles(rotationModifier, baseNumberToSpawn);
         }
         else if (objectEulers.z >= 90)
         {
+            pitcherAudio.Play();
             rotationModifier = 3;
             baseNumberToSpawn = 3;
             particleForce.x = -75.0f;
@@ -77,7 +81,7 @@ public class ParticleGenerator : MonoBehaviour
     void spawnParticles(int rotationModifier, int baseNumberToSpawn)
     {
         //COME BACK HERE 
-        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 250 && pouringManager.isPouring == true)//&& gameObject.transform.rotation.eulerAngles.z > somePredefinedSize)
+        if (lastSpawnTime + SPAWN_INTERVAL < Time.time && particlesSpawned < 300 && pouringManager.isPouring == true)//&& gameObject.transform.rotation.eulerAngles.z > somePredefinedSize)
         { // Is it time already for spawning a new particle?
             GameObject newLiquidParticle = (GameObject)Instantiate(Resources.Load("LiquidPhysics/DynamicParticle")); //Spawn a particle
             particlesSpawned += 1;

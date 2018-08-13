@@ -15,6 +15,10 @@ public class iceCubeSpawner : MonoBehaviour
         {
             spawnIceCube();
         }
+        if (iceCube.transform.position.y < -10)
+        {
+            Destroy(iceCube);
+        }
     }
     
 

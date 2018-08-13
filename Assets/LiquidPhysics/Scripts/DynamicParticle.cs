@@ -65,8 +65,9 @@ public class DynamicParticle : MonoBehaviour
         {
             case STATES.WATER: //Water and lava got the same behaviour
                 MovementAnimation();
-                if (this.gameObject.transform.position.y < -10)
+                if (this.gameObject.transform.position.y < -5)
                 {
+                    Camera.main.GetComponent<AudioSource>().Play();
                     ScaleDown();
                     ParticleGenerator.particlesSpawned -= 1;
                     scoreTaker.totalScore -= 100;

@@ -10,11 +10,23 @@ public class winCheck : MonoBehaviour
     [SerializeField] private Text lossText;
     [SerializeField] private GameObject lossPanel;
     bool waterIsFilled = false;
+    [SerializeField] private AudioClip loss;
+    [SerializeField] private AudioClip win;
+    private AudioSource winAudio;
 
     private void Start()
     {
+        winAudio = GetComponent<AudioSource>();
         winPanel.SetActive(false);
         lossPanel.SetActive(false);
+    }
+
+    IEnumerator waitForSound()
+    {
+        winAudio.Play();
+        yield return new WaitForSeconds(winAudio.clip.length);
+        Destroy(gameObject);
+
     }
     void Update()
     {
@@ -26,7 +38,8 @@ public class winCheck : MonoBehaviour
             Debug.Log("Game has been won for real");
             winPanel.SetActive(true);
             winText.text = "You won with a total of " + scoreTaker.totalScore + " score and made " + pouringManager.totalPours + " pour(s) total!";
-            Destroy(gameObject);
+            winAudio.clip = win;
+            StartCoroutine(waitForSound());
 
         }
         else if(pouringManager.totalPours >= 5 && waterIsFilled == false)
@@ -34,7 +47,10 @@ public class winCheck : MonoBehaviour
             Debug.Log("Game has been lost");
             lossPanel.SetActive(true);
             lossText.text = "You lost with a total of " + scoreTaker.totalScore + " score and made " + pouringManager.totalPours + " pour(s) total!";
-            Destroy(gameObject);
+            winAudio.clip = loss;
+
+            StartCoroutine(waitForSound());
+
         }
     }
 
