@@ -14,7 +14,7 @@ using System.Collections;
 public class ParticleGenerator : MonoBehaviour
 {
     static public int particlesSpawned = 0;
-    float SPAWN_INTERVAL = 0.025f; // How much time until the next particle spawns
+    float SPAWN_INTERVAL = 0.015f; // How much time until the next particle spawns
     float lastSpawnTime = float.MinValue; //The last spawn time
     public int PARTICLE_LIFETIME = 3; //How much time will each particle live
     public Vector3 particleForce; //Is there a initial force particles should have?
@@ -69,6 +69,8 @@ public class ParticleGenerator : MonoBehaviour
             rotationModifier = 2;
             baseNumberToSpawn = 2;
             particleForce.x = -50.0f;
+            SPAWN_INTERVAL = 0.010f;
+
             spawnParticles(rotationModifier, baseNumberToSpawn);
         }
         else if (objectEulers.z >= 90)
@@ -78,6 +80,7 @@ public class ParticleGenerator : MonoBehaviour
             rotationModifier = 3;
             baseNumberToSpawn = 3;
             particleForce.x = -75.0f;
+            SPAWN_INTERVAL = 0.005f;
 
             spawnParticles(rotationModifier, baseNumberToSpawn);
         }
