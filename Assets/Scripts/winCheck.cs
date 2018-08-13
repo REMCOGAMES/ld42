@@ -12,10 +12,13 @@ public class winCheck : MonoBehaviour
     bool waterIsFilled = false;
     [SerializeField] private AudioClip loss;
     [SerializeField] private AudioClip win;
+    [SerializeField] private GameObject pitcher;
     private AudioSource winAudio;
+    public float waitCheck;
 
     private void Start()
     {
+        waitCheck = 0.0f;
         winAudio = GetComponent<AudioSource>();
         winPanel.SetActive(false);
         lossPanel.SetActive(false);
@@ -25,6 +28,7 @@ public class winCheck : MonoBehaviour
     {
         if (winAudio.isPlaying == false)
             winAudio.Play();
+        Destroy(pitcher);
         yield return new WaitForSeconds(winAudio.clip.length);
         Destroy(gameObject);
 
@@ -60,30 +64,27 @@ public class winCheck : MonoBehaviour
         waterIsFilled = false;
         GetComponent<LineRenderer>().startColor = new Color(1.0f, 0.0f, 0.0f);
         GetComponent<LineRenderer>().endColor = new Color(1.0f, 0.0f, 0.0f);
-
+        waitCheck = 0.0f;
     }
 
     //Will not work if the player releases the pitcher too early, bug I can't fix right now
     private void OnTriggerStay2D(Collider2D collision)
     {
-        StartCoroutine(wait());
+        waitCheck += Time.fixedDeltaTime;
+
         if (pouringManager.isPouring == false && collision.GetComponent<Collider2D>().tag == "DynamicParticle")
         {
-
+            if (waitCheck >= 4.0f)
+            {
+                Debug.Log("Got in the check");
+                waterIsFilled = true;
+            }
             GetComponent<LineRenderer>().startColor = new Color(0.0f, 1.0f, 0.0f);
             GetComponent<LineRenderer>().endColor = new Color(0.0f, 1.0f, 0.0f);
 
         }
     }
 
-
-    IEnumerator wait()
-    {
-        yield return new WaitForSeconds(3.0f);
-       
-        Debug.Log("Game should be won");
-        waterIsFilled = true;
-
-    }
+    
 
 }
