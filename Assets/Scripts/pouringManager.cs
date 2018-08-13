@@ -5,16 +5,19 @@ using UnityEngine;
 public class pouringManager : MonoBehaviour
 {
 
-    static public bool isPouring = false;
-    static public int totalPours = 0;
+    static public bool isPouring;
+    static public int totalPours;
     TargetJoint2D pouringJoint;
     Camera mainCam;
+    public LayerMask dragLayer;
     Vector3 worldPos;
     Quaternion pourRotation;
     Vector3 pourPosition;
-    
+
     void Start()
     {
+        totalPours = 0;
+        isPouring = false;
         pourRotation = this.gameObject.transform.rotation;
         pourPosition = this.gameObject.transform.position;
         pouringJoint = GetComponent<TargetJoint2D>();
@@ -23,11 +26,17 @@ public class pouringManager : MonoBehaviour
     private void Update()
     {
         var worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
         if (Input.GetMouseButtonDown(0))
         {
+           // var collider = Physics2D.OverlapPoint(worldPos, dragLayer);
+            //if (!collider)
+            //    return;
 
+           // var body = collider.attachedRigidbody;
+           // if (!body)
+           //     return;
             pouringJoint = gameObject.AddComponent<TargetJoint2D>();
+
             pouringJoint.dampingRatio = 1.0f;
             pouringJoint.frequency = 10;
 
@@ -40,22 +49,21 @@ public class pouringManager : MonoBehaviour
             return;
         }
 
+        if (totalPours == 5)
+        {
+            this.gameObject.GetComponent<Collider2D>().enabled = false;
+            this.gameObject.GetComponent<SpriteRenderer>().color = new Color(0.66f, 0.66f, 0.66f);
+            this.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0.66f, 0.66f, 0.66f);
+
+        }
 
         if (pouringJoint)
         {
             pouringJoint.target = worldPos;
-            Debug.Log(worldPos);
-            Debug.Log(pouringJoint.target);
+            // Debug.Log(worldPos);
+            // Debug.Log(pouringJoint.target);
         }
-
-       // if (gameObject.transform.rotation.eulerAngles.z > 90)
-         //   transform.rotation.eulerAngles.Set(0, 0, 90);
-
-        //if total pours is greater than a set number we want to make it non-interactable
-      //  if (totalPours > 4)
-      //  {
-      //      GetComponent<BoxCollider2D>().enabled = false;
-      //  }
+        Debug.Log(totalPours);
     }
 
 

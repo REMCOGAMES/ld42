@@ -1,34 +1,60 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class winCheck : MonoBehaviour
 {
-
-    BoxCollider2D winCheckCollider;
-    BoxCollider2D scoreCheckCollider;
+    
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private Text winText;
+    [SerializeField] private Text lossText;
+    [SerializeField] private GameObject lossPanel;
     bool waterIsFilled = false;
-  
 
-    // Update is called once per frame
+    private void Start()
+    {
+        winPanel.SetActive(false);
+        lossPanel.SetActive(false);
+    }
     void Update()
     {
+
+
         if (waterIsFilled == true)
         {
             //Do whatever we want for the game win
+            Debug.Log("Game has been won for real");
+            winPanel.SetActive(true);
+            winText.text = "You won with a total of " + scoreTaker.totalScore + " score and made " + pouringManager.totalPours + " pour(s) total!";
+            Destroy(gameObject);
+
+        }
+        else if(pouringManager.totalPours >= 5 && waterIsFilled == false)
+        {
+            Debug.Log("Game has been lost");
+            lossPanel.SetActive(true);
+            lossText.text = "You lost with a total of " + scoreTaker.totalScore + " score and made " + pouringManager.totalPours + " pour(s) total!";
+            Destroy(gameObject);
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         waterIsFilled = false;
+        GetComponent<LineRenderer>().startColor = new Color(1.0f, 0.0f, 0.0f);
+        GetComponent<LineRenderer>().endColor = new Color(1.0f, 0.0f, 0.0f);
+
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    //Will not work if the player releases the pitcher too early, bug I can't fix right now
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if(pouringManager.isPouring == false)
-        StartCoroutine(wait());
+        GetComponent<LineRenderer>().startColor = new Color(0.0f, 1.0f, 0.0f);
+        GetComponent<LineRenderer>().endColor = new Color(0.0f, 1.0f, 0.0f);
+        if (pouringManager.isPouring == false && collision.GetComponent<Collider2D>().tag == "DynamicParticle")
+            StartCoroutine(wait());
     }
+     
 
     IEnumerator wait()
     {

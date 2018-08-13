@@ -7,29 +7,16 @@ public class scoreTaker : MonoBehaviour
 {
 
     BoxCollider2D scoreCollider;
-    static public int totalScore = 0; 
-    static public int gotOut = 0;
+    static public int totalScore = 0;
     [SerializeField] private Text scoreText;
- 
+    private void Start()
+    {
+        totalScore = 0;
+
+    }
     void Update()
     {
-        if (pouringManager.totalPours > 3)
-        {
-            //lock the object
-
-            // make one last check
-
-            //unless its filled lose
-        }
-
         scoreText.text = "Current score is: " + totalScore;
-
-
-        if (gotOut > 5)
-        {
-            //lose
-        }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,7 +26,7 @@ public class scoreTaker : MonoBehaviour
             totalScore += 20 / pouringManager.totalPours;
 
     }
-   
+
 
 
 

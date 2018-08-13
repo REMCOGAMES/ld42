@@ -68,9 +68,7 @@ public class DynamicParticle : MonoBehaviour
                 if (this.gameObject.transform.position.y < -10)
                 {
                     ScaleDown();
-                    scoreTaker.gotOut += 1;
                     ParticleGenerator.particlesSpawned -= 1;
-                    scoreTaker.gotOut += 1;
                     scoreTaker.totalScore -= 100;
                 }
                 break;
